@@ -1,0 +1,159 @@
+#!/bin/bash
+RRDPATH="/path/to/rrd/dir"
+IMGPATH="/path/to/save/imgs"
+RAWCOLOUR="#FF0000"
+RAWCOLOUR2="#CC3366"
+RAWCOLOUR3="#336699"
+RAWCOLOUR4="#006600"
+RAWCOLOUR5="#000000"
+TRENDCOLOUR="#FFFF00"
+RRDFILE="dbfile.rrd"
+
+LAT="your latitude"
+LON="your longitude"
+SUNRISEHR=`/usr/bin/sunwait sun up $LAT $LON -p | sed -n '/Sun transits/{:a;n;/Civil twilight/b;p;ba}' | cut -c 30-31`
+SUNRISEMIN=`/usr/bin/sunwait sun up $LAT $LON -p | sed -n '/Sun transits/{:a;n;/Civil twilight/b;p;ba}' | cut -c 32-33`
+SUNSETHR=`/usr/bin/sunwait sun up $LAT $LON -p | sed -n '/Sun transits/{:a;n;/Civil twilight/b;p;ba}' | cut -c 45-46`
+SUNSETMIN=`/usr/bin/sunwait sun up $LAT $LON -p | sed -n '/Sun transits/{:a;n;/Civil twilight/b;p;ba}' | cut -c 47-48`
+SUNR=$(($SUNRISEHR * 3600 + $SUNRISEMIN * 60))
+SUNS=$(($SUNSETHR * 3600 + $SUNSETMIN * 60))
+
+#hour
+rrdtool graph $IMGPATH/hour.png --start -6h \
+--full-size-mode \
+--width=700 --height=400 \
+--slope-mode \
+--color=SHADEB#9999CC \
+--watermark="Bart Bania" \
+DEF:temp1=$RRDPATH/$RRDFILE:a:AVERAGE \
+DEF:temp2=$RRDPATH/$RRDFILE:b:AVERAGE \
+DEF:temp3=$RRDPATH/$RRDFILE:c:AVERAGE \
+DEF:temp4=$RRDPATH/$RRDFILE:d:AVERAGE \
+DEF:temp5=$RRDPATH/$RRDFILE:e:AVERAGE \
+CDEF:nightplus=LTIME,86400,%,$SUNR,LT,INF,LTIME,86400,%,$SUNS,GT,INF,UNKN,temp1,*,IF,IF \
+CDEF:nightminus=LTIME,86400,%,$SUNR,LT,NEGINF,LTIME,86400,%,$SUNS,GT,NEGINF,UNKN,temp1,*,IF,IF \
+AREA:nightplus#CCCCCCAA \
+AREA:nightminus#CCCCCCAA \
+LINE2:temp1$RAWCOLOUR:"A" \
+LINE2:temp2$RAWCOLOUR2:"B" \
+LINE2:temp3$RAWCOLOUR3:"C" \
+LINE2:temp4$RAWCOLOUR4:"D" \
+LINE2:temp5$RAWCOLOUR5:"E\l" \
+HRULE:0#0000FF:"freezing"
+
+#day
+rrdtool graph $IMGPATH/day.png --start -1d \
+--full-size-mode \
+--width=700 --height=400 \
+--slope-mode \
+--color=SHADEA#9999CC \
+--watermark="Bart Bania" \
+DEF:temp1=$RRDPATH/$RRDFILE:a:AVERAGE \
+DEF:temp2=$RRDPATH/$RRDFILE:b:AVERAGE \
+DEF:temp3=$RRDPATH/$RRDFILE:c:AVERAGE \
+DEF:temp4=$RRDPATH/$RRDFILE:d:AVERAGE \
+DEF:temp5=$RRDPATH/$RRDFILE:e:AVERAGE \
+CDEF:trend1=temp4,21600,TREND \
+CDEF:trend2=temp5,21600,TREND \
+CDEF:trend3=temp1,21600,TREND \
+CDEF:nightplus=LTIME,86400,%,$SUNR,LT,INF,LTIME,86400,%,$SUNS,GT,INF,UNKN,temp1,*,IF,IF \
+CDEF:nightminus=LTIME,86400,%,$SUNR,LT,NEGINF,LTIME,86400,%,$SUNS,GT,NEGINF,UNKN,temp1,*,IF,IF \
+AREA:nightplus#CCCCCCAA \
+AREA:nightminus#CCCCCCAA \
+LINE2:temp1$RAWCOLOUR:"A" \
+LINE2:temp2$RAWCOLOUR2:"B" \
+LINE2:temp3$RAWCOLOUR3:"C" \
+LINE2:temp4$RAWCOLOUR4:"D" \
+LINE2:temp5$RAWCOLOUR5:"E\l" \
+LINE1:trend1$TRENDCOLOUR:"6h average" \
+LINE1:trend2$TRENDCOLOUR:"6h average" \
+LINE1:trend3$TRENDCOLOUR:"6h average\l" \
+HRULE:0#0000FF:"freezing"
+
+#week
+rrdtool graph $IMGPATH/week.png --start -1w \
+--full-size-mode \
+--width=700 --height=400 \
+--watermark="Bart Bania" \
+--slope-mode \
+--color=SHADEB#9999CC \
+DEF:temp1=$RRDPATH/$RRDFILE:a:AVERAGE \
+DEF:temp2=$RRDPATH/$RRDFILE:b:AVERAGE \
+DEF:temp3=$RRDPATH/$RRDFILE:c:AVERAGE \
+DEF:temp4=$RRDPATH/$RRDFILE:d:AVERAGE \
+DEF:temp5=$RRDPATH/$RRDFILE:e:AVERAGE \
+CDEF:nightplus=LTIME,86400,%,$SUNR,LT,INF,LTIME,86400,%,$SUNS,GT,INF,UNKN,temp1,*,IF,IF \
+CDEF:nightminus=LTIME,86400,%,$SUNR,LT,NEGINF,LTIME,86400,%,$SUNS,GT,NEGINF,UNKN,temp1,*,IF,IF \
+AREA:nightplus#CCCCCCAA \
+AREA:nightminus#CCCCCCAA \
+LINE2:temp1$RAWCOLOUR:"A" \
+LINE2:temp2$RAWCOLOUR2:"B" \
+LINE2:temp3$RAWCOLOUR3:"C" \
+LINE2:temp4$RAWCOLOUR4:"D" \
+LINE2:temp5$RAWCOLOUR5:"E\l" \
+HRULE:0#0000FF:"freezing"
+
+#month
+rrdtool graph $IMGPATH/month.png --start -1m \
+--full-size-mode \
+--width=700 --height=400 \
+--slope-mode \
+--color=SHADEA#9999CC \
+--watermark="Bart Bania" \
+DEF:temp1=$RRDPATH/$RRDFILE:a:AVERAGE \
+DEF:temp2=$RRDPATH/$RRDFILE:b:AVERAGE \
+DEF:temp3=$RRDPATH/$RRDFILE:c:AVERAGE \
+DEF:temp4=$RRDPATH/$RRDFILE:d:AVERAGE \
+DEF:temp5=$RRDPATH/$RRDFILE:e:AVERAGE \
+LINE2:temp1$RAWCOLOUR:"A" \
+LINE2:temp2$RAWCOLOUR2:"B" \
+LINE2:temp3$RAWCOLOUR3:"C" \
+LINE2:temp4$RAWCOLOUR4:"D" \
+LINE2:temp5$RAWCOLOUR5:"E\l" \
+HRULE:0#0000FF:"freezing"
+
+#year
+rrdtool graph $IMGPATH/year.png --start -1y \
+--full-size-mode \
+--width=700 --height=400 \
+--watermark="Bart Bania" \
+--color=SHADEB#9999CC \
+--slope-mode \
+DEF:temp1=$RRDPATH/$RRDFILE:a:AVERAGE \
+DEF:temp2=$RRDPATH/$RRDFILE:b:AVERAGE \
+DEF:temp3=$RRDPATH/$RRDFILE:c:AVERAGE \
+DEF:temp4=$RRDPATH/$RRDFILE:d:AVERAGE \
+DEF:temp5=$RRDPATH/$RRDFILE:e:AVERAGE \
+LINE2:temp1$RAWCOLOUR:"A" \
+LINE2:temp2$RAWCOLOUR2:"B" \
+LINE2:temp3$RAWCOLOUR3:"C" \
+LINE2:temp4$RAWCOLOUR4:"D" \
+LINE2:temp5$RAWCOLOUR5:"E\l" \
+HRULE:0#0000FF:"freezing"
+
+#averages
+rrdtool graph $IMGPATH/avg.png --start -1w \
+--full-size-mode \
+--width=700 --height=400 \
+--slope-mode \
+--color=SHADEB#9999CC \
+--watermark="Bart Bania" \
+DEF:temp1=$RRDPATH/$RRDFILE:a:AVERAGE \
+DEF:temp2=$RRDPATH/$RRDFILE:b:AVERAGE \
+DEF:temp3=$RRDPATH/$RRDFILE:c:AVERAGE \
+DEF:temp4=$RRDPATH/$RRDFILE:d:AVERAGE \
+DEF:temp5=$RRDPATH/$RRDFILE:e:AVERAGE \
+CDEF:trend1=temp4,86400,TREND \
+CDEF:trend2=temp5,86400,TREND \
+CDEF:trend3=temp1,86400,TREND \
+CDEF:trend4=temp2,86400,TREND \
+CDEF:trend5=temp3,86400,TREND \
+CDEF:nightplus=LTIME,86400,%,$SUNR,LT,INF,LTIME,86400,%,$SUNS,GT,INF,UNKN,temp1,*,IF,IF \
+CDEF:nightminus=LTIME,86400,%,$SUNR,LT,NEGINF,LTIME,86400,%,$SUNS,GT,NEGINF,UNKN,temp1,*,IF,IF \
+AREA:nightplus#CCCCCCAA \
+AREA:nightminus#CCCCCCAA \
+LINE1:trend1$RAWCOLOUR4:"D 6h average" \
+LINE1:trend2$RAWCOLOUR5:"E 6h average" \
+LINE1:trend3$RAWCOLOUR:"A 6h average" \
+LINE1:trend4$RAWCOLOUR2:"B 6h average" \
+LINE1:trend5$TRENDCOLOUR:"C 6h average"
