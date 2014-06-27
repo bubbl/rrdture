@@ -21,6 +21,7 @@ $sec = "600";
         <li><a href="/about"><i class="fa fa-question-circle"></i> About</a></li>
         <li><a href="http://www.bartbania.com">The Unwritten Words <i class="fa fa-external-link"></i></a></li>
         <li><a href="https://gitlab.com/bartlomiej.bania/rrdtool"><i class="fa fa-github"></i> Git repository</a></li>
+        <li><a href="https://twitter.com/RRDTureBot"><i class="fa fa-twitter"></i> Tweets</a></li>
     </ul>
 </div>
 <div id="modif">
