@@ -1,5 +1,4 @@
 #!/bin/bash
-
 ############################
 #
 # Parameters to adjust
