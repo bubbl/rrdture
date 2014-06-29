@@ -22,7 +22,7 @@ $sec = "600";
         <li><a href="/charts"><i class="fa fa-database"></i> MySQL Charts</a></li>
         <li><a href="about"><i class="fa fa-question-circle"></i> About</a></li>
         <li><a href="http://www.bartbania.com">The Unwritten Words <i class="fa fa-external-link"></i></a></li>
-        <li><a href="https://github.com/bubbl/rrdture"><i class="fa fa-github"></i> Git repository</a></li>
+        <li><a href="https://gitlab.com/bartlomiej.bania/rrdtool"><i class="fa fa-github"></i> Git repository</a></li>
         <li><a href="https://twitter.com/RRDTureBot"><i class="fa fa-twitter"></i> Tweets</a></li>
     </ul>
 </div>
@@ -32,32 +32,13 @@ $sec = "600";
 <div id="wrapper">
     <div class="slider-wrapper bubbl-theme">
         <div id="slider" class="nivoSlider">
-            <a href="img/hour.png"><img src="img/hour.png" alt="" title="#caption1"></img></a>
-            <a href="img/day.png"><img src="img/day.png" alt="" title="#caption2"></img></a>
-            <a href="img/week.png"><img src="img/week.png" alt="" title="#caption3"></img></a>
-            <a href="img/week.png"><img src="img/month.png" alt="" title="#caption4"></img></a>
-            <a href="img/year.png"><img src="img/year.png" alt="" title="#caption5"></img></a>
-            <a href="img/avg.png"><img src="img/avg.png" alt="" title="#caption6"></img></a>
+            <a href="img/hour.png"><img src="img/hour.png" alt=""></img></a>
+            <a href="img/day.png"><img src="img/day.png" alt=""></img></a>
+            <a href="img/week.png"><img src="img/week.png" alt=""></img></a>
+            <a href="img/week.png"><img src="img/month.png" alt=""></img></a>
+            <a href="img/year.png"><img src="img/year.png" alt=""></img></a>
+            <a href="img/avg.png"><img src="img/avg.png" alt=""></img></a>
         </div>
-        <div id="caption1" class="nivo-html-caption">
-            <strong>Hourly temperatures</strong> <span></span> <em>Showing last 6 hours</em>.
-        </div>
-        <div id="caption2" class="nivo-html-caption">
-            <strong>Daily temperatures</strong> <span></span> <em>Showing the last 24 hours</em>.
-        </div>
-        <div id="caption3" class="nivo-html-caption">
-            <strong>Weekly temperatures</strong> <span></span> <em>Showing the last week</em>.
-        </div>
-        <div id="caption4" class="nivo-html-caption">
-            <strong>Monthly temperatures</strong> <span></span>Showing the last month<em></em>.
-        </div>
-        <div id="caption5" class="nivo-html-caption">
-            <strong>Yearly temperatures</strong> <span></span> <em>Showing whole year</em>.
-        </div>
-        <div id="caption6" class="nivo-html-caption">
-            <strong>Weekly averages</strong> <span></span> <em>Last week averages</em>.
-        </div>
-
     </div>
 <div id="footer">
     <i class="fa fa-paper-plane-o"></i> <a href="mailto:contact@bartbania.com"><i>contact@bartbania.com</i></a>
