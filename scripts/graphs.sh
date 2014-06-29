@@ -59,15 +59,11 @@ CDEF:nightplus=LTIME,86400,%,$SUNR,LT,INF,LTIME,86400,%,$SUNS,GT,INF,UNKN,temp1,
 CDEF:nightminus=LTIME,86400,%,$SUNR,LT,NEGINF,LTIME,86400,%,$SUNS,GT,NEGINF,UNKN,temp1,*,IF,IF \
 AREA:nightplus#E0E0E0 \
 AREA:nightminus#E0E0E0 \
-CDEF:dusktilldawn=LTIME,86400,%,$DAWN,LT,INF,LTIME,86400,%,$DUSK,GT,INF,UNKN,temp1,*,IF,IF \
-CDEF:dawntilldusk=LTIME,86400,%,$DAWN,LT,NEGINF,LTIME,86400,%,$DUSK,GT,NEGINF,UNKN,temp1,*,IF,IF \
-AREA:dusktilldawn#CCCCCC \
-AREA:dawntilldusk#CCCCCC \
 COMMENT:"  Location         Last        Avg\l" \
 LINE2:temp2$RAWCOLOUR2:"Outside(East)" \
 GPRINT:temp2:LAST:"%5.1lf °C" \
 GPRINT:temp2:AVERAGE:"%5.1lf °C\l" \
-COMMENT:"\t\t\t\t\t\t---------------------------\l" \
+COMMENT:"---------------------------\c" \
 LINE2:temp4$RAWCOLOUR4:"Main Room    " \
 GPRINT:temp4:LAST:"%5.1lf °C" \
 GPRINT:temp4:AVERAGE:"%5.1lf °C\l" \
@@ -77,7 +73,7 @@ LINE1:temp5$RAWCOLOUR5:"Hall         " \
 GPRINT:temp5:LAST:"%5.1lf °C" \
 GPRINT:temp5:AVERAGE:"%5.1lf °C\l" \
 COMMENT:"\u" \
-COMMENT:"Sunrise\: $SUNRISEHR\:$SUNRISEMIN\r" \
+COMMENT:"Sunrise\: $SUNRISEHR\:$SUNRISEMIN\r"
 LINE1:temp1$RAWCOLOUR:"Water Pipe   " \
 GPRINT:temp1:LAST:"%5.1lf °C" \
 GPRINT:temp1:AVERAGE:"%5.1lf °C\l" \
@@ -118,7 +114,7 @@ COMMENT:"  Location         Last        Avg\l" \
 LINE2:temp2$RAWCOLOUR2:"Outside(East)" \
 GPRINT:temp2:LAST:"%5.1lf °C" \
 GPRINT:temp2:AVERAGE:"%5.1lf °C\l" \
-COMMENT:"\t\t\t\t\t\t---------------------------\l" \
+COMMENT:"---------------------------\c" \
 LINE2:temp4$RAWCOLOUR4:"Main Room    " \
 GPRINT:temp4:LAST:"%5.1lf °C" \
 GPRINT:temp4:AVERAGE:"%5.1lf °C\l" \
@@ -168,7 +164,7 @@ COMMENT:"Location         Last        Avg  \r" \
 LINE2:temp2$RAWCOLOUR2:"Outside(East)" \
 GPRINT:temp2:LAST:"%5.1lf °C" \
 GPRINT:temp2:AVERAGE:"%5.1lf °C\l" \
-COMMENT:"\t\t\t\t\t\t---------------------------\l" \
+COMMENT:"---------------------------\c" \
 LINE2:temp4$RAWCOLOUR4:"Main Room    " \
 GPRINT:temp4:LAST:"%5.1lf °C" \
 GPRINT:temp4:AVERAGE:"%5.1lf °C\l" \
@@ -204,7 +200,7 @@ COMMENT:"Location         Last        Avg  \r" \
 LINE2:temp2$RAWCOLOUR2:"Outside(East)" \
 GPRINT:temp2:LAST:"%5.1lf °C" \
 GPRINT:temp2:AVERAGE:"%5.1lf °C\l" \
-COMMENT:"\t\t\t\t\t\t---------------------------\l" \
+COMMENT:"---------------------------\c" \
 LINE2:temp4$RAWCOLOUR4:"Main Room    " \
 GPRINT:temp4:LAST:"%5.1lf °C" \
 GPRINT:temp4:AVERAGE:"%5.1lf °C\l" \
@@ -240,7 +236,7 @@ COMMENT:"Location         Last        Avg  \r" \
 LINE1:temp2$RAWCOLOUR2:"Outside(East)" \
 GPRINT:temp2:LAST:"%5.1lf °C" \
 GPRINT:temp2:AVERAGE:"%5.1lf °C\l" \
-COMMENT:"\t\t\t\t\t\t---------------------------\l" \
+COMMENT:"---------------------------\c" \
 LINE1:temp4$RAWCOLOUR4:"Main Room    " \
 GPRINT:temp4:LAST:"%5.1lf °C" \
 GPRINT:temp4:AVERAGE:"%5.1lf °C\l" \
@@ -280,7 +276,7 @@ CDEF:nightminus=LTIME,86400,%,$SUNR,LT,NEGINF,LTIME,86400,%,$SUNS,GT,NEGINF,UNKN
 AREA:nightplus#CCCCCC \
 AREA:nightminus#CCCCCC \
 LINE2:trend4$RAWCOLOUR2:"Outside (East side) 6h average\l" \
-COMMENT:"\t\t\t\t\t\t---------------------------\l" \
+COMMENT:"---------------------------\c" \
 LINE2:trend1$RAWCOLOUR4:"Main Room 6h average\l" \
 COMMENT:"\u" \
 LINE1:trend3$RAWCOLOUR:"Water 6h average\r" \
