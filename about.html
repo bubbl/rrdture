@@ -20,7 +20,7 @@
         <li><a href="/charts"><i class="fa fa-database"></i> MySQL Charts</a></li>
         <li><a href="/about"><i class="fa fa-question-circle"></i> About</a></li>
         <li><a href="http://www.bartbania.com">The Unwritten Words <i class="fa fa-external-link"></i></a></li>
-        <li><a href="https://github.com/bubbl/rrdture"><i class="fa fa-github"></i> Git repository</a></li>
+        <li><a href="https://gitlab.com/bartlomiej.bania/rrdtool"><i class="fa fa-github"></i> Git repository</a></li>
         <li><a href="https://twitter.com/RRDTureBot"><i class="fa fa-twitter"></i> Tweets</a></li>
     </ul>
 </div>
@@ -189,13 +189,20 @@ HRULE:0#0000FF:"freezing"
 </pre>
 At the top of the script I've got pre-defined changable variables, such as paths and color codes for my convenience. This particular example creates a graph for the last 6 hours for all five sensors.</p>
 <p id="sun" style="text-shadow: 1px 0 1px #006; padding-top: 100px; margin-top: -100px;"><i class="fa fa-moon-o"></i><strong> Day and night time on the graph</strong></p>
-<p align="justify">Apart from a plain graph, I wanted to add a bit of flavour to it by marking day and night times. Instead of writing my own code, I've decided to make it simpler and use an external tool. A great small C program for calculating sunrise and sunset came in hand.<br/><a href="https://www.risacher.org/sunwait/" target="_blank"><i>sunwait</i> <i class="fa fa-external-link"></i></a> gives a whole bunch of information, including  civil, nautical, and astronomical twilights, so I had to extract the data that was of interest to me:
+<p align="justify">Apart from a plain graph, I wanted to add a bit of flavour to it by marking day and night times, as well as dusk/dawn based on <a href="http://www.sunrisesunset.com/definitions.html" terget="_blank">Civil twilight<i class="fa fa-external-link"></i></a> calculations. Instead of writing my own code, I've decided to make it simpler and use an external tool. A great small C program for calculating sunrise and sunset came in hand.<br/><a href="https://www.risacher.org/sunwait/" target="_blank"><i>sunwait</i> <i class="fa fa-external-link"></i></a> gives a whole bunch of information, including civil, nautical, and astronomical twilights, so I had to extract the data that was of interest to me:
 <pre class="prettyprint doxy">
 # Geographical position
 LAT=""
 LON=""
 
 # Get the relevant data in an ugly manner
+# Calculate twilight
+DUSKHR=`/usr/bin/sunwait sun up $LAT $LON -p | sed -n '/Sun rises/{:a;n;/Nautical twilight/b;p;ba}' | cut -c 45-46`
+DUSKMIN=`/usr/bin/sunwait sun up $LAT $LON -p | sed -n '/Sun rises/{:a;n;/Nautical twilight/b;p;ba}' | cut -c 47-48`
+DAWNHR=`/usr/bin/sunwait sun up $LAT $LON -p | sed -n '/Sun rises/{:a;n;/Nautical twilight/b;p;ba}' | cut -c 30-31`
+DAWNMIN=`/usr/bin/sunwait sun up $LAT $LON -p | sed -n '/Sun rises/{:a;n;/Nautical twilight/b;p;ba}' | cut -c 32-33`
+
+# Calculate night time
 SUNRISEHR=`/usr/bin/sunwait sun up $LAT $LON -p | sed -n '/Sun transits/{:a;n;/Civil twilight/b;p;ba}' | cut -c 30-31`
 SUNRISEMIN=`/usr/bin/sunwait sun up $LAT $LON -p | sed -n '/Sun transits/{:a;n;/Civil twilight/b;p;ba}' | cut -c 32-33`
 SUNSETHR=`/usr/bin/sunwait sun up $LAT $LON -p | sed -n '/Sun transits/{:a;n;/Civil twilight/b;p;ba}' | cut -c 45-46`
@@ -204,13 +211,19 @@ SUNSETMIN=`/usr/bin/sunwait sun up $LAT $LON -p | sed -n '/Sun transits/{:a;n;/C
 # Convert hours/minutes to seconds
 SUNR=$(($SUNRISEHR * 3600 + $SUNRISEMIN * 60))
 SUNS=$(($SUNSETHR * 3600 + $SUNSETMIN * 60))
+DUSK=$(($DUSKHR * 3600 + $DUSKMIN * 60))
+DAWN=$(($DAWNHR * 3600 + $DAWNMIN * 60))
 </pre>
 and add it to graphs as shaded area representing night times where I live:
 <pre class="prettyprint doxy">
 CDEF:nightplus=LTIME,86400,%,$SUNR,LT,INF,LTIME,86400,%,$SUNS,GT,INF,UNKN,temp1,*,IF,IF \
 CDEF:nightminus=LTIME,86400,%,$SUNR,LT,NEGINF,LTIME,86400,%,$SUNS,GT,NEGINF,UNKN,temp1,*,IF,IF \
-AREA:nightplus#CCCCCCAA \
-AREA:nightminus#CCCCCCAA \
+AREA:nightplus#E0E0E0 \
+AREA:nightminus#E0E0E0 \
+CDEF:dusktilldawn=LTIME,86400,%,$DAWN,LT,INF,LTIME,86400,%,$DUSK,GT,INF,UNKN,temp1,*,IF,IF \
+CDEF:dawntilldusk=LTIME,86400,%,$DAWN,LT,NEGINF,LTIME,86400,%,$DUSK,GT,NEGINF,UNKN,temp1,*,IF,IF \
+AREA:dusktilldawn#CCCCCC \
+AREA:dawntilldusk#CCCCCC
 </pre>
 <a href="bash.txt">Full BASH code <i class="fa fa-file-code-o" style="color:red;"></i></a>.
 </p>
@@ -229,7 +242,8 @@ The above invoke the tasks:
 </ul>
 </p>
 <p id="wbst" style="text-shadow: 1px 0 1px #006; padding-top: 100px; margin-top: -100px;"><i class="fa fa-eye"></i><strong> The Website</strong></p>
-<p align="justify">The website itself was created mainly using HTML, CSS and JavaScript.</p>
+<p align="justify">The website itself is hosted on my main sever. All the files are dynamically transferred from Raspberry Pi. This ensures me the SD card would last longer and no data would be lost. Apart from that, it ensures the website runs smooth without any interrupts.</p>
+<p align="justify">The website was created with HTML, CSS, PHP and JavaScript.</p>
 <p align="justify">External tools used here are:
     <ul>
         <li><a href="http://purecss.io/" target="_blank"><i>Pure</i></a> - small, responsive CSS modules</li>
