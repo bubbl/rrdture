@@ -31,10 +31,10 @@ SUNSETHR=`/usr/bin/sunwait sun up $LAT $LON -p | sed -n '/Sun transits/{:a;n;/Ci
 SUNSETMIN=`/usr/bin/sunwait sun up $LAT $LON -p | sed -n '/Sun transits/{:a;n;/Civil twilight/b;p;ba}' | cut -c 47-48`
 
 # Converting to seconds
-SUNR=$(($SUNRISEHR * 3600 + $SUNRISEMIN * 60))
-SUNS=$(($SUNSETHR * 3600 + $SUNSETMIN * 60))
-DUSK=$(($DUSKHR * 3600 + $DUSKMIN * 60))
-DAWN=$(($DAWNHR * 3600 + $DAWNMIN * 60))
+SUNR=$((10#$SUNRISEHR * 3600 + 10#$SUNRISEMIN * 60))
+SUNS=$((10#$SUNSETHR * 3600 + 10#$SUNSETMIN * 60))
+DUSK=$((10#$DUSKHR * 3600 + 10#$DUSKMIN * 60))
+DAWN=$((10#$DAWNHR * 3600 + 10#$DAWNMIN * 60))
 
 ############################
 #
