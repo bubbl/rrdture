@@ -1,9 +1,5 @@
 #!/bin/bash
-############################
-#
-# Parameters to adjust
-#
-############################
+
 RRDPATH=" "
 IMGPATH=" "
 RRDFILE=" "
